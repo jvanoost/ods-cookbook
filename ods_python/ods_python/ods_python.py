@@ -37,11 +37,13 @@ class readODS:
         self.url = url
         self.apikey = apiKey
 
-    def getDataset(self, datasetName, parameters = ""):
+    def getDataset(self, datasetName, start=0, rows=10, parameters = ""):
         """Get a dataset
         
         Parameters:
         datasetName (string): Name of the dataset you want te retrieve
+        start (int): Index of the first item to return (starting at 0). Default: 0
+        rows (int): Number of items to return. Default: 10 
         parameters (string): list of parameters URL encoded. ex : param1=value1&param2=value2. Default: ""
         
         Returns:
@@ -50,7 +52,7 @@ class readODS:
         parameters (list) : list of parameters
         """
 
-        request = self.url + "api/records/1.0/search/?dataset=" + datasetName + "&" + parameters
+        request = self.url + "api/records/1.0/search/?dataset=" + datasetName + "&rows=" + str(rows) + "&start=" + str(start) + "&" + parameters
         if self.apikey != "":
             request = request + "&apikey=" + self.apikey
                     
@@ -58,19 +60,20 @@ class readODS:
         
         return respJson["nhits"], respJson["records"], respJson["parameters"]
     
-    def getCatalog(self):
+    def getCatalog(self, start=0, rows=10):
         """Get catalog info
         
         Parameters:
-        None
+        start (int): Index of the first item to return (starting at 0). Default: 0
+        rows (int): Number of items to return. Default: 10 
         
         Returns:
         total_count (int): Number of elements in the catalog
         datasets (list): list of all datasets
         """
-        request = self.url + "api/v2/catalog/datasets"
+        request = self.url + "api/v2/catalog/datasets?rows=" + str(rows) + "&start=" + str(start)
         if self.apikey != "":
-            request = request + "?apikey=" + self.apikey
+            request = request + "&apikey=" + self.apikey
                     
         respJson = self.makeRequest(request)
         
