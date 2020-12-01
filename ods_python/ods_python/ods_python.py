@@ -52,7 +52,7 @@ class readODS:
 
         request = self.url + "api/records/1.0/search/?dataset=" + datasetName + "&" + parameters
         if self.apikey != "":
-            request = request + "?apikey=" + self.apikey
+            request = request + "&apikey=" + self.apikey
                     
         respJson = self.makeRequest(request)
         
@@ -95,9 +95,7 @@ class readODS:
         return respJson["total_count"], respJson["datasets"]
     
     def makeRequest(self, request):
-        if self.apikey != "":
-            request = request + "?apikey=" + self.apikey
-        print(request)
+        
         try:
             resp = requests.get(request)
             if resp.status_code != 200:
